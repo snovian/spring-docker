@@ -1,10 +1,14 @@
 version: '3'
+volumes:
+    nexus_data:
 services:
     nginx:
         image: nginx:alpine
         container_name: springworks_nginx
         ports:
             - "80:80"
+        volumes:
+            - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
         links:
             - nexus
         depends_on:
@@ -15,4 +19,5 @@ services:
         environment:
             - NEXUS_CONTEXT=nexus
         volumes:
-            - ./data/nexus:/nexus-data
+            - nexus_data:/nexus-data
+
