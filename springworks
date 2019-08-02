@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+declare -r WORK_ROOT="$(dirname $(readlink -f "$0"))"
+
+start(){
+   cd $WORK_ROOT
+   docker-compose down
+   docker-compose up -d
+}
+
+stop(){
+   cd $WORK_ROOT
+   docker-compose down
+}
+
+case $1 in 
+    start) start;;
+    stop) stop;;
+    "") start;;
+    *) echo "Usage: ./springworks start|stop"
+esac

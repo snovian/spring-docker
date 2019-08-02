@@ -1,0 +1,12 @@
+[Unit]
+Description=Springworks Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/springworks start
+ExecStop=/usr/bin/springworks stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target  
