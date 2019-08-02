@@ -2,6 +2,17 @@ version: '3'
 services:
     nginx:
         image: nginx:alpine
+        container_name: springworks_nginx
         ports:
             - "80:80"
-    
+        links:
+            - nexus
+        depends_on:
+            - nexus
+    nexus:
+        image: sonatype/nexus3:latest
+        container_name: springworks_nexus
+        environment:
+            - NEXUS_CONTEXT=nexus
+        volumes:
+            - ./data/nexus:/nexus-data
