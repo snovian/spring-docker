@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+    nameNode:
+        image: bde2020/hadoop-namenode:2.0.0-hadoop3.1.1-java8
+        container_name: hadoop_namenode
+        volumes:
+            - hadoop_namenode:/hadoop/dfs/name
+        environment:
+            - CLUSTER_NAME=springworks
+        env_file:
+            - ./hadoop.env
+    dataNode1:
+        image: bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8
+        container_name: hadoop_data_1
+        volumes:
+            - hadoop_data1:/hadoop/dfs/data
+        env_file:
+            - ./hadoop.env
+        depends_on:
+            - nameNode
+    dataNode2:
+        image: bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8
+        container_name: hadoop_data_2
+        volumes:
+            - hadoop_data2:/hadoop/dfs/data
+        env_file:
+            - ./hadoop.env
+        depends_on:
+            - nameNode
+    resourceNode:
+        image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.1.1-java8
+        container_name: hadoop_resource
+        env_file:
+            - ./hadoop.env
+        depends_on:
+            - nameNode
+            - dataNode1
+            - dataNode2
+    historyNode:
+        image: bde2020/hadoop-historyserver:2.0.0-hadoop3.1.1-java8
+        container_name: hadoop_history
+        volumes:
+            - hadoop_history:/hadoop/yarn/timeline
+        env_file:
+            - ./hadoop.env
+        depends_on:
+            - nameNode
+            - dataNode1
+            - dataNode2
+volumes:
+    hadoop_namenode:
+    hadoop_data1:
+    hadoop_data2:
+    hadoop_history:
