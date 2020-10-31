@@ -12,16 +12,19 @@ ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 ENV HADOOP_VERSION 3.2.1
 ENV HADOOP_URL https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
 
-RUN  set -x \
-  && curl -fSL "$HADOOP_URL" -o /tmp/hadoop.tar.gz \
+RUN  set -x && curl -fSL "$HADOOP_URL" -o /tmp/hadoop.tar.gz \
   && tar -xvf /tmp/hadoop.tar.gz -C /opt/ \
-  && rm /tmp/hadoop.tar.gz \
-  && ln -s /opt/hadoop-$HADOOP_VERSION/etc/hadoop /etc/hadoop \
-  && mkdir -p /opt/hadoop-$HADOOP_VERSION/logs \
-  && mkdir /hadoop-data \
+  && rm /tmp/hadoop.tar.gz
 
-ENV HADOOP_HOME=/opt/hadoop-$HADOOP_VERSION
-ENV HADOOP_CONF=/etc/hadoop 
+#WORKDIR /opt 
+#ADD hadoop-$HADOOP_VERSION.tar.gz .
+
+RUN ln -s /opt/hadoop-$HADOOP_VERSION/etc/hadoop /etc/hadoop
+RUN mkdir -p /opt/hadoop-$HADOOP_VERSION/logs 
+RUN mkdir /hadoop-data 
+
+ENV HADOOP_HOME /opt/hadoop-$HADOOP_VERSION
+ENV HADOOP_CONF /etc/hadoop 
 ENV MULTIHOMED_NETWORK=1
 ENV USER=root
 ENV PATH=$HADOOP_HOME/bin/:$PATH
