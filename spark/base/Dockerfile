@@ -1,4 +1,4 @@
-FROM springworks/centos
+FROM springworks/centos-java8
 
 MAINTAINER zeyuan dong <zeyuan.dong@outlook.com>
 
